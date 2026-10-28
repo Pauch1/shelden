@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="icon" href="/icon-192.png" type="image/png" />
+    <link rel="manifest" href="/manifest.json" />
+    <title>Offline Tasks</title>
+  </head>
+  <body>
+    <h1>Offline Tasks</h1>
+    <p id="status" role="status">Starting...</p>
+    <form id="form">
+      <label for="text">Task</label>
+      <input id="text" maxlength="1000" required />
+      <button>Save</button>
+    </form>
+    <h2>Tasks</h2>
+    <ul id="entries"></ul>
+    <script src="/app.js"></script>
+  </body>
+</html>

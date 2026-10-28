@@ -1,0 +1,7 @@
+{
+  "name": "offline-tasks",
+  "private": true,
+  "scripts": {
+    "dev": "node server.js"
+  }
+}

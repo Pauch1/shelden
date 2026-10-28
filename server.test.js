@@ -1,0 +1,20 @@
+const { test } = require('node:test');
+const assert = require('node:assert/strict');
+const { createServer } = require('./server');
+test('tasks support creation, completion, editing, deletion and retry', async t => {
+  const server = createServer(':memory:');
+  await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
+  t.after(() => server.close());
+  const base = `http://127.0.0.1:${server.address().port}/api/tasks`;
+  const request = (method, path = '', body) => fetch(base + path, { method, headers: { 'Content-Type': 'application/json' }, ...(body === undefined ? {} : { body: JSON.stringify(body) }) });
+  const task = { id: 'one', text: 'Study', completed: false };
+  assert.equal((await request('POST', '', task)).status, 200);
+  assert.equal((await request('POST', '', task)).status, 200);
+  assert.deepEqual(await (await request('GET')).json(), [task]);
+  assert.equal((await request('PATCH', '/one', { completed: true })).status, 200);
+  assert.deepEqual(await (await request('GET', '/one')).json(), { ...task, completed: true });
+  assert.equal((await request('PUT', '/one', { text: 'Review', completed: false })).status, 200);
+  assert.equal((await request('PATCH', '/one', { completed: 'yes' })).status, 400);
+  assert.equal((await request('DELETE', '/one')).status, 200);
+  assert.equal((await request('GET', '/one')).status, 404);
+});
